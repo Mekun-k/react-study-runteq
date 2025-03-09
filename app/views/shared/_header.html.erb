@@ -1,0 +1,14 @@
+<div class="flex h-14 items-center bg-base-100">
+  <div class="mx-4 flex-1"><%= link_to image_tag("RUNTEQHub_logo.png", class: "h-12"), root_path, data: { turbo: false } %></div>
+  <% if logged_in? %>
+    <div class="dropdown dropdown-end mx-4 cursor-pointer">
+      <div tabindex="0">...</div>
+      <ul
+        tabindex="0"
+        class="menu dropdown-content z-10 rounded-box border border-gray-300 bg-base-100 shadow"
+      >
+        <li><%= link_to 'ログアウト', logout_path, class: 'whitespace-nowrap', data: { turbo_method: :delete } %></li>
+      </ul>
+    </div>
+  <% end %>
+</div>

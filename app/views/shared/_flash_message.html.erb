@@ -1,0 +1,16 @@
+<% flash.each do |message_type, message| %>
+  <div id="flash-message" role="alert" class="alert alert-<%= message_type %>">
+    <%= message %>
+  </div>
+<% end %>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    const flashMessage = document.getElementById('flash-message');
+    if (flashMessage) {
+      flashMessage.classList.add('hidden');
+    }
+  }, 5000); // 7秒後にフラッシュメッセージを非表示にする
+});
+</script>
