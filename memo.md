@@ -55,3 +55,10 @@ TypeScriptはJavaScriptを基にしたプログラミング言語で、型付け
 - **型エイリアス**：型に名前をつけて再利用可能（例：`type StrOrNum = string | number;`）。
 
 公式ドキュメントを参考にしながら、より詳細な文法を学習することが推奨されます。
+
+以下のコードにてDOMからIDがtodo_appの要素を取得しcontainer変数に代入している。
+const container = document.getElementById("todo_app");
+
+コンポーネントをレンダリングすることができる。
+これにより、Todoアプリが指定されたDOM要素内に表示され、マウントすることができる。
+root.render(<TodoApp />);
