@@ -25,7 +25,8 @@ export default function Todos() {
     <div>
       <div>
         <div>
-          <div>カテゴリータイトル</div>
+          <div>カテゴリータイトルtesttesttest
+          </div>
         </div>
         <div>
           <div>
