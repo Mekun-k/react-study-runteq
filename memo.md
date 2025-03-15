@@ -62,3 +62,81 @@ const container = document.getElementById("todo_app");
 コンポーネントをレンダリングすることができる。
 これにより、Todoアプリが指定されたDOM要素内に表示され、マウントすることができる。
 root.render(<TodoApp />);
+
+## **🚀 `throw showError()` とは？**
+`throw showError()` は、**Nuxt 3 のエラーハンドリングのための関数** で、ページや API で発生したエラーを Nuxt の `error.vue` へ伝えるために使用されます。
+
+💡 `throw createError()` と似ていますが、**`showError()` はクライアント側 (`process.client`) でも使える** ため、CSR（クライアントサイドレンダリング）でもエラーを処理できます。
+
+---
+
+## **✅ `throw showError()` の動作**
+例えば、`pages/1.vue` で `API` を叩いて `status: 404` の場合に `throw showError()` を実行すると **`error.vue` に遷移** する。
+
+### **📌 `pages/1.vue`**
+```vue
+<script setup>
+import { useFetch, showError } from "#app";
+
+// APIを取得
+const { data, error } = await useFetch("/api/data1");
+
+if (error.value) {
+  console.log("APIエラー:", error.value);
+
+  throw showError({
+    statusCode: error.value.status || 500,
+    statusMessage: error.value.statusText || "エラーが発生しました",
+  });
+}
+</script>
+
+<template>
+  <h1>1画面（管理者専用）</h1>
+</template>
+```
+
+✅ **エラーが発生すると `error.vue` に遷移し、エラー情報を表示できる！**  
+✅ **`throw showError()` は `process.client` でも使えるため、CSR（クライアントサイド遷移）でも機能する！**
+
+---
+
+## **✅ `showError()` の使い方**
+| **使い方** | **説明** |
+|-----------|------------------|
+| `showError({ statusCode: 404, statusMessage: 'Not Found' })` | エラーを表示（`error.vue` に遷移） |
+| `throw showError({ statusCode: 500, statusMessage: 'Server Error' })` | 例外としてエラーを発生させ、ページの表示を止める |
+
+**🛠 `showError()` を `throw` なしで使うと、エラー情報を表示するだけで `error.vue` に遷移しない！**  
+**🛠 `throw showError()` を使うと、`error.vue` に遷移する！**
+
+---
+
+## **✅ `throw createError()` との違い**
+| **関数** | **どこで使える？** | **エラーページ (`error.vue`) に遷移？** | **クライアント (`NuxtLink`) でも動く？** |
+|---------|------------------|----------------------------------|----------------------------------|
+| `throw createError()` | **サーバー (`process.server`)** | ✅ 遷移する | ❌ クライアント (`NuxtLink`) では動かない |
+| `throw showError()` | **サーバー (`process.server`) & クライアント (`process.client`)** | ✅ 遷移する | ✅ クライアント (`NuxtLink`) でも動く |
+
+🚀 **`throw showError()` の方が `NuxtLink` のクライアント遷移 (`process.client`) でも動くので便利！**
+
+---
+
+## **✅ まとめ**
+### **💡 `throw showError()` とは？**
+- **Nuxt のエラーハンドリングのための関数**
+- **`error.vue` に遷移する**
+- **`process.client`（クライアント側）でも動く**
+- **`throw createError()` より柔軟に使える**
+
+---
+
+### **💡 どんなときに `throw showError()` を使う？**
+✅ **`NuxtLink` のクライアントサイド遷移でエラーを `error.vue` に適用したいとき**  
+✅ **サーバー側 (`API`) だけでなく、クライアント側 (`useFetch`) のエラー処理も一貫させたいとき**  
+✅ **クライアント側のエラー処理でも `error.vue` に遷移させたいとき**
+
+---
+
+🚀 **`throw createError()` では `NuxtLink` のクライアント遷移で動作しない場合、`throw showError()` を使うのがベスト！**  
+試してみて、動作しない場合は詳細を教えてください！ 😊
