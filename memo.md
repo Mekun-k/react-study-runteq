@@ -145,3 +145,19 @@ createError() vs showError() の超要約！
 ✅ createError() → SSR（サーバー側）専用。throw createError() しないと error.vue に遷移しない。CSR（クライアント側）では効かないことがある。
 ✅ showError() → SSR でも CSR でも error.vue に遷移できる！特に NuxtLink の遷移時のエラー処理に強い。
 ✅ NuxtLink の遷移時に createError() で error.vue に遷移しないなら showError() を使うべし！
+
+
+**GCS（Google Cloud Storage）とは？**  
+Googleが提供する**クラウド上のストレージサービス**で、**画像・動画・JSONなどのデータを保存・管理**できる。  
+主な特徴：
+- **スケーラブル**（容量無制限で拡張可能）
+- **低コスト**（アクセス頻度に応じた料金体系）
+- **セキュア**（アクセス制御や暗号化対応）
+- **APIで簡単に操作可能**（Laravelや他のアプリと連携しやすい）
+
+主な用途：
+✅ **静的ファイル配信（画像・動画）**  
+✅ **ログ・バックアップ保存**  
+✅ **JSONデータストア（DB代わりの軽量データ管理）**
+
+クラウド上の「外付けハードディスク」みたいなもの！
