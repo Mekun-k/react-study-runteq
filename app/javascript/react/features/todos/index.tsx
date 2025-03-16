@@ -41,3 +41,11 @@ export default function Todos() {
     </div>
   );
 }
+
+if (error.valuse) {
+  console.log(error.value.status);
+  throw createError({
+    statusCode: error.value.status || 500,
+    statusMessage: error.value.statusText || "hgoe",
+  })  
+}

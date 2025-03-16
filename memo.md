@@ -140,3 +140,8 @@ if (error.value) {
 
 🚀 **`throw createError()` では `NuxtLink` のクライアント遷移で動作しない場合、`throw showError()` を使うのがベスト！**  
 試してみて、動作しない場合は詳細を教えてください！ 😊
+
+createError() vs showError() の超要約！
+✅ createError() → SSR（サーバー側）専用。throw createError() しないと error.vue に遷移しない。CSR（クライアント側）では効かないことがある。
+✅ showError() → SSR でも CSR でも error.vue に遷移できる！特に NuxtLink の遷移時のエラー処理に強い。
+✅ NuxtLink の遷移時に createError() で error.vue に遷移しないなら showError() を使うべし！
