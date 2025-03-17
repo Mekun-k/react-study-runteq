@@ -161,3 +161,84 @@ Googleが提供する**クラウド上のストレージサービス**で、**�
 ✅ **JSONデータストア（DB代わりの軽量データ管理）**
 
 クラウド上の「外付けハードディスク」みたいなもの！
+
+
+Nuxt.js でエラーハンドリングを行う際に、`showError` よりも `createError` が好まれる理由はいくつかあります。
+
+---
+
+## **1. `createError` はエラーオブジェクトを作成し、エラーページを表示できる**
+`createError` は `useAsyncData` や `useFetch` 内で使用でき、エラーオブジェクトを作成して適切にハンドリングできます。
+
+```ts
+import { useFetch, createError } from '#app'
+
+export default defineNuxtComponent({
+  async setup() {
+    const { data, error } = await useFetch('/api/data')
+
+    if (error.value) {
+      throw createError({ statusCode: 500, statusMessage: 'データ取得に失敗しました' })
+    }
+
+    return { data }
+  }
+})
+```
+
+**✅ `createError` のメリット**
+- `useFetch` / `useAsyncData` で簡単にエラー処理できる
+- ステータスコードやメッセージを設定できる
+- `throw` で例外として扱える（catch で制御可能）
+
+---
+
+## **2. `showError` はコンポーネントレベルでのエラーページ遷移**
+一方で `showError` は主に **レイアウトやページコンポーネント内** で使用し、エラーを即座に表示させます。
+
+```ts
+import { showError } from '#app'
+
+export default defineNuxtComponent({
+  setup() {
+    showError({ statusCode: 404, statusMessage: 'ページが見つかりません' })
+  }
+})
+```
+
+**❌ `showError` のデメリット**
+- `useFetch` などの非同期処理では適切に扱えない
+- `throw` ではないため、エラーハンドリングしづらい
+- API レスポンスのエラーハンドリングには不向き
+
+---
+
+## **3. APIのエラーハンドリングには `createError` が適している**
+Nuxt.js の `useFetch` / `useAsyncData` では `createError` を使うことで、API レスポンスのエラーハンドリングを統一的に管理できます。
+
+```ts
+const { data, error } = await useFetch('/api/user')
+
+if (error.value) {
+  throw createError({ statusCode: 403, statusMessage: 'アクセス権限がありません' })
+}
+```
+
+`showError` はエラーページへ遷移する用途には便利ですが、API レスポンスのエラー処理には適さないため、**API ハンドリングでは `createError` を使うのがベストプラクティス** です。
+
+---
+
+## **結論**
+|  | `createError` | `showError` |
+|---|---|---|
+| **用途** | APIレスポンスのエラーハンドリング | ページ/レイアウト内でのエラー表示 |
+| **適用場所** | `useFetch`, `useAsyncData`, API | ページコンポーネント, レイアウト |
+| **エラーの扱い** | `throw` できる | 直接エラーを表示 |
+| **エラーページ遷移** | 可能（例外として扱う） | すぐにエラー画面へ遷移 |
+| **適用範囲** | API / 非同期処理 | UI エラー |
+
+### **結論**
+- **APIエラーや非同期処理のエラーハンドリング → `createError`**
+- **画面のエラー表示やエラーページ遷移 → `showError`**
+
+API通信の失敗時は `createError` を使うのが適切で、Nuxt.js の標準的なエラーハンドリングフローと相性が良いです。
