@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Item, Category } from "./types";
 
-// 初期アイテムモックリストの定義
 const initialItems = [
   { id: 1, title: 'アイテム1', content: 'アイテム1', category: 'NoStatus', assignee: '未割り当て', position: 10, category_id: 1},
   { id: 2, title: 'アイテム2', content: 'アイテム2', category: 'NoStatus', assignee: '未割り当て', position: 20, category_id: 1 },
@@ -14,7 +13,7 @@ const initialItems = [
   { id: 9, title: 'アイテム9', content: 'アイテム9', category: 'InProgress', assignee: '未割り当て', position: 10, category_id: 3 },
   { id: 10, title: 'アイテム10', content: 'アイテム10', category: 'Done', assignee: '未割り当て', position: 10, category_id: 4 }
 ];
-// 初期カテゴリーモックリストの定義
+
 const initialCategories = [
   { id: 1, name: 'NoStatus'},
   { id: 2, name: 'Backlog'},
